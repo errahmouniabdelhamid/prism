@@ -142,6 +142,10 @@ export default defineConfig({
                 link: "/core-concepts/prism-server",
               },
               {
+                text: "Observing Usage",
+                link: "/core-concepts/observing-usage",
+              },
+              {
                 text: "Testing",
                 link: "/core-concepts/testing",
               },
