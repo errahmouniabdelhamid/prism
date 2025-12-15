@@ -8,6 +8,7 @@ use Prism\Prism\Facades\PrismServer;
 use Prism\Prism\Streaming\Events\TextDeltaEvent;
 use Prism\Prism\Text\PendingRequest;
 use Prism\Prism\Text\Response as TextResponse;
+use Prism\Prism\Support\ObservabilityRecorder;
 use Prism\Prism\ValueObjects\Media\Image;
 use Prism\Prism\ValueObjects\Messages\AssistantMessage;
 use Prism\Prism\ValueObjects\Messages\SystemMessage;
@@ -99,6 +100,8 @@ class PrismChatController
     {
         $response = $generator->asText();
 
+        $this->recordUsage($generator, $response);
+
         $data = [
             'id' => $response->meta->id,
             'object' => 'chat.completion',
@@ -128,6 +131,15 @@ class PrismChatController
     protected function textFromResponse(TextResponse $response): string
     {
         return $response->text;
+    }
+
+    protected function recordUsage(PendingRequest $generator, TextResponse $response): void
+    {
+        app(ObservabilityRecorder::class)->recordChat([
+            'model' => request('model'),
+            'messages' => request('messages'),
+            'stream' => (bool) request('stream', false),
+        ], $response, $generator);
     }
 
     /**

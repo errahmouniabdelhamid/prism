@@ -6,6 +6,11 @@ return [
         'middleware' => [],
         'enabled' => env('PRISM_SERVER_ENABLED', false),
     ],
+    'observability' => [
+        'enabled' => env('PRISM_OBSERVABILITY_ENABLED', false),
+        'middleware' => ['web'],
+        'path' => 'prism/observability',
+    ],
     'providers' => [
         'openai' => [
             'url' => env('OPENAI_URL', 'https://api.openai.com/v1'),

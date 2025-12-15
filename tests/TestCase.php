@@ -14,5 +14,7 @@ abstract class TestCase extends BaseTestCase
     protected function getEnvironmentSetUp($app): void
     {
         $app['config']->set('prism.prism_server.enabled', true);
+        $app['config']->set('prism.observability.enabled', true);
+        $app['config']->set('prism.observability.middleware', []);
     }
 }
