@@ -13,11 +13,23 @@ class PrismServiceProvider extends ServiceProvider
             __DIR__.'/../config/prism.php' => config_path('prism.php'),
         ], 'prism-config');
 
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'prism');
+
+        $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
+
         if (config('prism.prism_server.enabled')) {
             Route::group([
                 'middleware' => config('prism.prism_server.middleware', []),
             ], function (): void {
                 $this->loadRoutesFrom(__DIR__.'/Routes/PrismServer.php');
+            });
+        }
+
+        if (config('prism.observability.enabled')) {
+            Route::group([
+                'middleware' => config('prism.observability.middleware', []),
+            ], function (): void {
+                $this->loadRoutesFrom(__DIR__.'/Routes/Observability.php');
             });
         }
     }
